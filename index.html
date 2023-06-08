@@ -11,96 +11,97 @@
       padding: 0;
     }
 
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-h1 {
-  text-align: center;
-  color: #333;
-}
+    h1 {
+      text-align: center;
+      color: #333;
+    }
 
-form {
-  margin-bottom: 20px;
-}
+    form {
+      margin-bottom: 20px;
+    }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
 
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-}
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
 
-input[type="submit"] {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
+    input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
 
-#welcomeContainer {
-  display: none;
-  text-align: center;
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-}
+    #welcomeContainer {
+      display: none;
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
 
-#banButton {
-  display: none;
-  background-color: #ff0000;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
+    #banButton {
+      display: none;
+      background-color: #ff0000;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
 
-#panelButton {
-  background-color: #00a6e2;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
+    #panelButton {
+      background-color: #00a6e2;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Switter</h1>
 
-<form id="registerForm" onsubmit="handleRegisterForm(event)">
-  <h2>Registro</h2>
-  <label for="registerEmail">Email:</label>
-  <input type="email" id="registerEmail" required>
-  <label for="registerPassword">Senha:</label>
-  <input type="password" id="registerPassword" required>
-  <input type="submit" value="Registrar">
-</form>
+    <form id="registerForm" onsubmit="handleRegisterForm(event)">
+      <h2>Registro</h2>
+      <label for="registerEmail">Email:</label>
+      <input type="email" id="registerEmail" required>
+      <label for="registerPassword">Senha:</label>
+      <input type="password" id="registerPassword" required>
+      <input type="submit" value="Registrar">
+    </form>
 
-<form id="loginForm" onsubmit="handleLoginForm(event)">
-  <h2>Login</h2>
-  <label for="loginEmail">Email:</label>
-  <input type="email" id="loginEmail" required>
-  <label for="loginPassword">Senha:</label>
-  <input type="password" id="loginPassword" required>
-  <input type="submit" value="Entrar">
-</form>
+    <form id="loginForm" onsubmit="handleLoginForm(event)">
+      <h2>Login</h2>
+      <label for="loginEmail">Email:</label>
+      <input type="email" id="loginEmail" required>
+      <label for="loginPassword">Senha:</label>
+      <input type="password" id="loginPassword" required>
+      <input type="submit" value="Entrar">
+    </form>
 
-<div id="welcomeContainer">
-  <h2>Bem-vindo, <span id="welcomeEmail"></span>!</h2>
-  <button id="banButton" onclick="handleBanForm()">Banir Usuário</button>
-  <button id="panelButton" onclick="redirectToPanel()">Painel</button>
-</div>
+    <div id="welcomeContainer">
+      <h2>Bem-vindo, <span id="welcomeEmail"></span>!</h2>
+      <button id="banButton" onclick="handleBanForm()">Banir Usuário</button>
+      <button id="panelButton" onclick="redirectToPanel()">Painel</button>
+    </div>
   </div>
+
   <script>
     // Variável para armazenar as informações de registro
     var registeredUsers = [];
@@ -253,5 +254,4 @@ input[type="submit"] {
 </body>
 </html>
 
-
-
+Agora o botão "Painel" redirecionará para o link que você especificou: https://samuel12353345.github.io/switter-welcome/
