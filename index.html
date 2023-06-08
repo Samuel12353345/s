@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Switter</title>
+  <style>
+    /* Estilos do código */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#welcomeContainer {
+  display: none;
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#banButton {
+  display: none;
+  background-color: #ff0000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#panelButton {
+  background-color: #00a6e2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Switter</h1>
+
+<form id="registerForm" onsubmit="handleRegisterForm(event)">
+  <h2>Registro</h2>
+  <label for="registerEmail">Email:</label>
+  <input type="email" id="registerEmail" required>
+  <label for="registerPassword">Senha:</label>
+  <input type="password" id="registerPassword" required>
+  <input type="submit" value="Registrar">
+</form>
+
+<form id="loginForm" onsubmit="handleLoginForm(event)">
+  <h2>Login</h2>
+  <label for="loginEmail">Email:</label>
+  <input type="email" id="loginEmail" required>
+  <label for="loginPassword">Senha:</label>
+  <input type="password" id="loginPassword" required>
+  <input type="submit" value="Entrar">
+</form>
+
+<div id="welcomeContainer">
+  <h2>Bem-vindo, <span id="welcomeEmail"></span>!</h2>
+  <button id="banButton" onclick="handleBanForm()">Banir Usuário</button>
+  <button id="panelButton" onclick="redirectToPanel()">Painel</button>
+</div>
+  </div>
+  <script>
+    // Variável para armazenar as informações de registro
+    var registeredUsers = [];
+
+    // Variável para armazenar o usuário logado
+    var currentUser = null;
+
+    // Variável para armazenar os emails banidos
+    var bannedEmails = [];
+
+    // Função para salvar os dados de registro no armazenamento local
+    function saveRegisteredUsers() {
+      localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+    }
+
+    // Função para salvar os emails banidos no armazenamento local
+    function saveBannedEmails() {
+      localStorage.setItem("bannedEmails", JSON.stringify(bannedEmails));
+    }
+
+    // Função para carregar os dados de registro do armazenamento local
+    function loadRegisteredUsers() {
+      var registeredUsersData = localStorage.getItem("registeredUsers");
+      if (registeredUsersData) {
+        registeredUsers = JSON.parse(registeredUsersData);
+      }
+    }
+
+    // Função para carregar os emails banidos do armazenamento local
+    function loadBannedEmails() {
+      var bannedEmailsData = localStorage.getItem("bannedEmails");
+      if (bannedEmailsData) {
+        bannedEmails = JSON.parse(bannedEmailsData);
+      }
+    }
+
+    // Função para verificar se o usuário logado é um moderador
+    function isModerator() {
+      return currentUser && currentUser.isModerator === true;
+    }
+
+    // Função para tratar o envio do formulário de registro
+    function handleRegisterForm(event) {
+      event.preventDefault();
+
+      // Obtenha os valores inseridos nos campos de registro
+      var email = document.getElementById("registerEmail").value;
+      var password = document.getElementById("registerPassword").value;
+
+      // Verifique se o email está banido
+      var isBanned = bannedEmails.includes(email);
+
+      if (isBanned) {
+        alert("Este email está banido. Não é possível registrar com este email.");
+      } else {
+        // Verifique se o email já está registrado
+        var isRegistered = registeredUsers.some(function(user) {
+          return user.email === email;
+        });
+
+        if (isRegistered) {
+          alert("Este email já está registrado. Por favor, faça login.");
+        } else {
+          // Crie um novo objeto de usuário
+          var newUser = {
+            email: email,
+            password: password,
+            isModerator: false
+          };
+
+          // Adicione o novo usuário à lista de usuários registrados
+          registeredUsers.push(newUser);
+
+          // Salve os dados de registro
+          saveRegisteredUsers();
+
+          alert("Registro realizado com sucesso!");
+
+          // Limpe o formulário após o registro
+          document.getElementById("registerForm").reset();
+        }
+      }
+    }
+
+    // Função para tratar o envio do formulário de login
+    function handleLoginForm(event) {
+      event.preventDefault();
+
+      // Obtenha os valores inseridos nos campos de login
+      var email = document.getElementById("loginEmail").value;
+      var password = document.getElementById("loginPassword").value;
+
+      // Verifique se o usuário está registrado e as credenciais estão corretas
+      var user = registeredUsers.find(function(user) {
+        return user.email === email && user.password === password;
+      });
+
+      if (user) {
+        alert("Login realizado com sucesso!");
+
+        // Armazene o usuário logado
+        currentUser = user;
+
+        // Mostrar o contêiner de boas-vindas após o login
+        document.getElementById("welcomeContainer").style.display = "block";
+        document.getElementById("welcomeEmail").textContent = currentUser.email;
+
+        // Verificar se o usuário logado é um moderador
+        if (isModerator()) {
+          document.getElementById("banButton").style.display = "block";
+          document.getElementById("panelButton").style.display = "block";
+        } else {
+          document.getElementById("banButton").style.display = "none";
+          document.getElementById("panelButton").style.display = "block"; // Modificação: Exibir o botão "Painel" para todos os usuários logados
+        }
+
+        // Limpar o formulário após o login
+        document.getElementById("loginForm").reset();
+      } else {
+        alert("Credenciais inválidas. Por favor, tente novamente.");
+      }
+    }
+
+    // Função para tratar o formulário de banir usuário
+    function handleBanForm() {
+      var emailToBan = prompt("Digite o email do usuário a ser banido:");
+
+      if (emailToBan) {
+        // Adicionar o email banido à lista de emails banidos
+        bannedEmails.push(emailToBan);
+
+        // Salvar os emails banidos
+        saveBannedEmails();
+
+        alert("Usuário banido com sucesso!");
+      }
+    }
+
+    // Função para redirecionar para o painel
+    function redirectToPanel() {
+      window.location.href = "https://samuel12353345.github.io/switter/";
+    }
+
+    // Carregar os dados de registro e os emails banidos do armazenamento local ao carregar a página
+    window.onload = function() {
+      loadRegisteredUsers();
+      loadBannedEmails();
+    };
+  </script>
+</body>
+</html>
+
+
+
